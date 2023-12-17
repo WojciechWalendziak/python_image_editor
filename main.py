@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk, ImageDraw, ImageFilter
 
+image_version = 0
+
 
 def create_gui_interface():
     """
@@ -10,9 +12,45 @@ def create_gui_interface():
     # Create the main window
     window = tk.Tk()
     window.title("Image Editor")
-    window.geometry("700x700")
+    window.geometry("1500x800")
 
     # Function to handle image resizing
+    def save_image():
+
+        print(image_version)
+
+        if image_version == 1:
+
+            resize_image_save()
+
+        if image_version == 2:
+
+            crop_image_save()
+
+        if image_version == 3:
+
+            grayscale_image_save()
+
+        if image_version == 4:
+
+            reverse_colors_save()
+
+        if image_version == 5:
+
+            left_edges_only_save()
+
+        if image_version == 6:
+
+            rotate_image_save()
+
+        if image_version == 7:
+
+            draw_on_image_save()
+
+        if image_version == 8:
+
+            blur_image_save()
+
     def resize_image():
         # Get the user input for the new dimensions
         new_width = int(width_entry.get())
@@ -20,12 +58,23 @@ def create_gui_interface():
 
         # Resize the image
         resized_image = image.resize((new_width, new_height))
+        global image_version
+        image_version = 1
 
         # Update the image in the GUI
         new_image = ImageTk.PhotoImage(resized_image)
         image_label.configure(image=new_image)
         image_label.image = new_image
         return new_image
+
+    def resize_image_save():
+        # Get the user input for the new dimensions
+        new_width = int(width_entry.get())
+        new_height = int(height_entry.get())
+
+        # Resize the image
+        resized_image = image.resize((new_width, new_height))
+        resized_image.save("new_image.jpg")
 
     def crop_image():
         # Get the user input for the new dimensions
@@ -36,6 +85,8 @@ def create_gui_interface():
 
         # Crop the image
         cropped_image = image.crop((left, top, right, bottom))
+        global image_version
+        image_version = 2
 
         # Shows the image in image viewer
         #im1.show()
@@ -47,6 +98,74 @@ def create_gui_interface():
 
         return new_image
 
+    def crop_image_save():
+        # Get the user input for the new dimensions
+        left = int(crop_left_entry.get())
+        top = int(crop_top_entry.get())
+        right = int(crop_right_entry.get())
+        bottom = int(crop_bottom_entry.get())
+
+        # Crop the image
+        cropped_image = image.crop((left, top, right, bottom))
+        cropped_image.save("new_image.jpg")
+
+    def grayscale_image():
+        # Get the user input for the new dimensions
+        gray_version = image.convert("L")
+        global image_version
+        image_version = 3
+
+        # Update the image in the GUI
+        new_image = ImageTk.PhotoImage(gray_version)
+        image_label.configure(image=new_image)
+        image_label.image = new_image
+        return new_image
+
+    def grayscale_image_save():
+        # Get the user input for the new dimensions
+        gray_version = image.convert("L")
+        gray_version.save("new_image.jpg")
+
+    def reverse_colors():
+        # Get the user input for the new dimensions
+        edges = image.filter(ImageFilter.FIND_EDGES)
+        bands = edges.split()
+        global image_version
+        image_version = 4
+
+        # Update the image in the GUI
+        new_image = ImageTk.PhotoImage(bands[0])
+        image_label.configure(image=new_image)
+        image_label.image = new_image
+        return new_image
+
+    def reverse_colors_save():
+        # Get the user input for the new dimensions
+        edges = image.filter(ImageFilter.FIND_EDGES)
+        bands = edges.split()
+        bands[0].save("new_image.jpg")
+
+    def left_edges_only():
+        # Get the user input for the new dimensions
+        edges = image.filter(ImageFilter.FIND_EDGES)
+        bands = edges.split()
+        reversal = bands[0].point(lambda x: 255 if x < 100 else 0)
+        global image_version
+        image_version = 5
+
+        # Update the image in the GUI
+        new_image = ImageTk.PhotoImage(reversal)
+        image_label.configure(image=new_image)
+        image_label.image = new_image
+        return new_image
+
+    def left_edges_only_save():
+        # Get the user input for the new dimensions
+        edges = image.filter(ImageFilter.FIND_EDGES)
+        bands = edges.split()
+        reversal = bands[0].point(lambda x: 255 if x < 100 else 0)
+        reversal.save("new_image.jpg")
+
     # Function to handle image rotation
     def rotate_image():
         # Get the user input for the rotation angle
@@ -54,11 +173,21 @@ def create_gui_interface():
 
         # Rotate the image
         rotated_image = image.rotate(angle)
+        global image_version
+        image_version = 6
 
         # Update the image in the GUI
         new_image = ImageTk.PhotoImage(rotated_image)
         image_label.configure(image=new_image)
         image_label.image = new_image
+
+    def rotate_image_save():
+        # Get the user input for the rotation angle
+        angle = int(angle_entry.get())
+
+        # Rotate the image
+        rotated_image = image.rotate(angle)
+        rotated_image.save("new_image.jpg")
 
     # Function to handle drawing on the image
     def draw_on_image():
@@ -72,11 +201,26 @@ def create_gui_interface():
         # Draw on the image
         draw = ImageDraw.Draw(image)
         draw.rectangle([(x, y), (x + 50, y + 50)], fill=(red, green, blue))
+        global image_version
+        image_version = 7
 
         # Update the image in the GUI
         new_image = ImageTk.PhotoImage(image)
         image_label.configure(image=new_image)
         image_label.image = new_image
+
+    def draw_on_image_save():
+        # Get the user input for the drawing color and coordinates
+        red = int(draw_red_entry.get())
+        green = int(draw_green_entry.get())
+        blue = int(draw_blue_entry.get())
+        x = int(draw_x_entry.get())
+        y = int(draw_y_entry.get())
+
+        # Draw on the image
+        draw = ImageDraw.Draw(image)
+        draw.rectangle([(x, y), (x + 50, y + 50)], fill=(red, green, blue))
+        image.save("new_image.jpg")
 
     # Function to handle image blurring
     def blur_image():
@@ -85,11 +229,21 @@ def create_gui_interface():
 
         # Blur the image
         blurred_image = image.filter(ImageFilter.GaussianBlur(radius))
+        global image_version
+        image_version = 8
 
         # Update the image in the GUI
         new_image = ImageTk.PhotoImage(blurred_image)
         image_label.configure(image=new_image)
         image_label.image = new_image
+
+    def blur_image_save():
+        # Get the user input for the blur radius
+        radius = int(blur_radius_entry.get())
+
+        # Blur the image
+        blurred_image = image.filter(ImageFilter.GaussianBlur(radius))
+        blurred_image.save("new_image.jpg")
 
     # Load the initial image
     image = Image.open("sample.jpg")
@@ -126,6 +280,12 @@ def create_gui_interface():
     rotate_button = tk.Button(window, text="Rotate", command=rotate_image)
     rotate_button.grid(row=6, column=2)
 
+    grayscale_button = tk.Button(window, text="Grayscale", command=grayscale_image)
+    grayscale_button.grid(row=8, column=2)
+
+    reverse_colors_button = tk.Button(window, text="Reverse colors", command=reverse_colors)
+    reverse_colors_button.grid(row=10, column=2)
+
     draw_general_label_1 = tk.Label(window, text="Draw coordinates:")
     draw_general_label_1.grid(row=4, column=3, columnspan=2)
     draw_general_label_2 = tk.Label(window, text="(axis starts in top left corner, set colors in RGB scale)")
@@ -161,26 +321,32 @@ def create_gui_interface():
     blur_button = tk.Button(window, text="Blur", command=blur_image)
     blur_button.grid(row=6, column=5)
 
+    edges_button = tk.Button(window, text="Left just edges", command=left_edges_only)
+    edges_button.grid(row=8, column=5)
+
     crop_general_label_3 = tk.Label(window, text="Crop image (set coordinates):")
     crop_general_label_3.grid(row=4, column=6, columnspan=2)
-    crop_left_label = tk.Label(window, text="Left:")
+    crop_left_label = tk.Label(window, text="Left border coordinate:")
     crop_left_label.grid(row=5, column=6)
     crop_left_entry = tk.Entry(window)
     crop_left_entry.grid(row=6, column=6)
-    crop_top_label = tk.Label(window, text="Top:")
+    crop_top_label = tk.Label(window, text="Top border coordinate:")
     crop_top_label.grid(row=7, column=6)
     crop_top_entry = tk.Entry(window)
     crop_top_entry.grid(row=8, column=6)
-    crop_right_label = tk.Label(window, text="Right:")
+    crop_right_label = tk.Label(window, text="Right border coordinate:")
     crop_right_label.grid(row=5, column=7)
     crop_right_entry = tk.Entry(window)
     crop_right_entry.grid(row=6, column=7)
-    crop_bottom_label = tk.Label(window, text="Bottom:")
+    crop_bottom_label = tk.Label(window, text="Bottom border coordinate:")
     crop_bottom_label.grid(row=7, column=7)
     crop_bottom_entry = tk.Entry(window)
     crop_bottom_entry.grid(row=8, column=7)
     crop_button = tk.Button(window, text="Crop", command=crop_image)
     crop_button.grid(row=9, column=6, columnspan=2)
+
+    save_button = tk.Button(window, text="Save", command=save_image)
+    save_button.grid(row=11, column=6, columnspan=2)
 
     # Create right margin
     right_margin = tk.Label(window, text="")
