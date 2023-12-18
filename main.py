@@ -29,7 +29,7 @@ def create_gui_interface():
 
         if image_version == 3:
 
-            grayscale_image_save()
+            grey_out_image_save()
 
         if image_version == 4:
 
@@ -109,7 +109,7 @@ def create_gui_interface():
         cropped_image = image.crop((left, top, right, bottom))
         cropped_image.save("new_image.jpg")
 
-    def grayscale_image():
+    def grey_out_image():
         # Get the user input for the new dimensions
         gray_version = image.convert("L")
         global image_version
@@ -121,7 +121,7 @@ def create_gui_interface():
         image_label.image = new_image
         return new_image
 
-    def grayscale_image_save():
+    def grey_out_image_save():
         # Get the user input for the new dimensions
         gray_version = image.convert("L")
         gray_version.save("new_image.jpg")
@@ -280,8 +280,8 @@ def create_gui_interface():
     rotate_button = tk.Button(window, text="Rotate", command=rotate_image)
     rotate_button.grid(row=6, column=2)
 
-    grayscale_button = tk.Button(window, text="Grayscale", command=grayscale_image)
-    grayscale_button.grid(row=8, column=2)
+    grey_out_button = tk.Button(window, text="grey out", command=grey_out_image)
+    grey_out_button.grid(row=8, column=2)
 
     reverse_colors_button = tk.Button(window, text="Reverse colors", command=reverse_colors)
     reverse_colors_button.grid(row=10, column=2)
