@@ -62,10 +62,10 @@ def create_gui_interface():
         image_version = 1
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(resized_image)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
-        return new_image
+        edited_image = ImageTk.PhotoImage(resized_image)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
+        return edited_image
 
     def resize_image_save():
         # Get the user input for the new dimensions
@@ -74,7 +74,7 @@ def create_gui_interface():
 
         # Resize the image
         resized_image = image.resize((new_width, new_height))
-        resized_image.save("new_image.jpg")
+        resized_image.save("edited_image.jpg")
 
     def crop_image():
         # Get the user input for the new dimensions
@@ -92,11 +92,11 @@ def create_gui_interface():
         #im1.show()
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(cropped_image)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
+        edited_image = ImageTk.PhotoImage(cropped_image)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
 
-        return new_image
+        return edited_image
 
     def crop_image_save():
         # Get the user input for the new dimensions
@@ -107,7 +107,7 @@ def create_gui_interface():
 
         # Crop the image
         cropped_image = image.crop((left, top, right, bottom))
-        cropped_image.save("new_image.jpg")
+        cropped_image.save("edited_image.jpg")
 
     def grey_out_image():
         # Get the user input for the new dimensions
@@ -116,15 +116,15 @@ def create_gui_interface():
         image_version = 3
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(gray_version)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
-        return new_image
+        edited_image = ImageTk.PhotoImage(gray_version)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
+        return edited_image
 
     def grey_out_image_save():
         # Get the user input for the new dimensions
         gray_version = image.convert("L")
-        gray_version.save("new_image.jpg")
+        gray_version.save("edited_image.jpg")
 
     def reverse_colors():
         # Get the user input for the new dimensions
@@ -134,16 +134,16 @@ def create_gui_interface():
         image_version = 4
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(bands[0])
-        image_label.configure(image=new_image)
-        image_label.image = new_image
-        return new_image
+        edited_image = ImageTk.PhotoImage(bands[0])
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
+        return edited_image
 
     def reverse_colors_save():
         # Get the user input for the new dimensions
         edges = image.filter(ImageFilter.FIND_EDGES)
         bands = edges.split()
-        bands[0].save("new_image.jpg")
+        bands[0].save("edited_image.jpg")
 
     def left_edges_only():
         # Get the user input for the new dimensions
@@ -154,17 +154,17 @@ def create_gui_interface():
         image_version = 5
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(reversal)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
-        return new_image
+        edited_image = ImageTk.PhotoImage(reversal)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
+        return edited_image
 
     def left_edges_only_save():
         # Get the user input for the new dimensions
         edges = image.filter(ImageFilter.FIND_EDGES)
         bands = edges.split()
         reversal = bands[0].point(lambda x: 255 if x < 100 else 0)
-        reversal.save("new_image.jpg")
+        reversal.save("edited_image.jpg")
 
     # Function to handle image rotation
     def rotate_image():
@@ -177,9 +177,9 @@ def create_gui_interface():
         image_version = 6
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(rotated_image)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
+        edited_image = ImageTk.PhotoImage(rotated_image)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
 
     def rotate_image_save():
         # Get the user input for the rotation angle
@@ -187,7 +187,7 @@ def create_gui_interface():
 
         # Rotate the image
         rotated_image = image.rotate(angle)
-        rotated_image.save("new_image.jpg")
+        rotated_image.save("edited_image.jpg")
 
     # Function to handle drawing on the image
     def draw_on_image():
@@ -205,9 +205,9 @@ def create_gui_interface():
         image_version = 7
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(image)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
+        edited_image = ImageTk.PhotoImage(image)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
 
     def draw_on_image_save():
         # Get the user input for the drawing color and coordinates
@@ -220,7 +220,7 @@ def create_gui_interface():
         # Draw on the image
         draw = ImageDraw.Draw(image)
         draw.rectangle([(x, y), (x + 50, y + 50)], fill=(red, green, blue))
-        image.save("new_image.jpg")
+        image.save("edited_image.jpg")
 
     # Function to handle image blurring
     def blur_image():
@@ -233,9 +233,9 @@ def create_gui_interface():
         image_version = 8
 
         # Update the image in the GUI
-        new_image = ImageTk.PhotoImage(blurred_image)
-        image_label.configure(image=new_image)
-        image_label.image = new_image
+        edited_image = ImageTk.PhotoImage(blurred_image)
+        image_label.configure(image=edited_image)
+        image_label.image = edited_image
 
     def blur_image_save():
         # Get the user input for the blur radius
@@ -243,7 +243,7 @@ def create_gui_interface():
 
         # Blur the image
         blurred_image = image.filter(ImageFilter.GaussianBlur(radius))
-        blurred_image.save("new_image.jpg")
+        blurred_image.save("edited_image.jpg")
 
     # Load the initial image
     image = Image.open("sample.jpg")
